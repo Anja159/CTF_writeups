@@ -20,16 +20,18 @@ cipher = AES.new(key, AES.MODE_CBC, iv)
 print("IV2 =", iv.hex())
 print("CT2 =", cipher.encrypt(flag).hex())
 ```
+
+The application uses the AES-CBC encryption.
 ![CBC.png](CBC.png)
 
-The application uses the AES-CBC encryption. If we look at the way both ciphers are initalised, we notice that the first cipher uses the value of `iv` as the `key`, which is later used as key in the second cipher:
+If we look at the way both ciphers are initalised, we notice that the first cipher uses the value of `iv` as the `key`, which is later used as key in the second cipher:
 ```python
 cipher = AES.new(iv,  AES.MODE_CBC, key)
 cipher = AES.new(key, AES.MODE_CBC, iv)
 ```
 And because the value of `iv` is printed out, we now know the key and we only need to calculate the IV. We are going to calculate it through the equation:
 
-$\;\;\;\;\;\;\;\;\;\;\;IV=decrypt(key,ciphertext)\;\;xor\;\;plaintext$
+IV = decrypt(key,ciphertext) xor plaintext
 
 Because of the way AES-CBC works the first block is encypted the same as in AES-ECB, which doesn't use IV in decryption. We decrypt the first block and then xor it with the known plaintext (which is in hex). The value of IV is represented by the first 32 characters (16 bytes).
 
