@@ -1,13 +1,16 @@
 ## Nonces and Keys (Crypto, medium)
 
-We are given a [file](enc.sqlite3)) with a .sqlite3 extension and description of the challenge tells us it was encrypted using AES-OFB and the key is `k=0x13371337133713371337133713371337`.
+We are given a [file](enc.sqlite3) with the .sqlite3 extension and description of the challenge tells us it was encrypted using AES-OFB and the key is `k=0x13371337133713371337133713371337`.
 
 To decrypt AES-OFB we need IV and the key.
+
+
 ![OFB.png](OFB.png)
+
 
 We can retrieve the IV throught the equation:
 
-$\;\;\;\;\;\;\;\;\;\;\;IV=decrypt\;(ciphertext\;\;xor\;\;plaintext)$
+$\\\\\\\\\\\IV=decrypt\(ciphertext\\xor\\plaintext)$
 
 We don't have the plaintext yet. But because our file has a .sqlite3 extension it could be a sqlite database engine file. According to https://en.wikipedia.org/wiki/SQLite 16 bytes in every .sqlite file are the same - `53 51 4c 69 74 65 20 66 6f 72 6d 61 74 20 33 00`. That means we have the plaintext. And the value of ciphertext are the first 16 bytes of our encrypted file. Because of the way AES-OFB works the first block is again encypted the same way as in AES-ECB. The solve script:
 
